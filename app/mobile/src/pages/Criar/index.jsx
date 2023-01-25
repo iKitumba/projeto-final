@@ -4,53 +4,52 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  FlatList,
 } from "react-native";
 import Constants from "expo-constants";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import Title from "../../components/Title";
 
-export default function Criar() {
+import { criarOptions } from "../../constants/criarOptions";
+
+export default function Criar({ navigation }) {
+  function handleBack() {
+    navigation.goBack();
+  }
+
+  function handleOptionPress(routeName) {
+    navigation.navigate(routeName);
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.topRow}>
-          <TouchableOpacity style={styles.goBack}>
+          <TouchableOpacity style={styles.goBack} onPress={handleBack}>
             <Ionicons name="arrow-back" size={24} color="#61768D" />
             <Text style={styles.topOpctionName}>Criar</Text>
           </TouchableOpacity>
         </View>
       </View>
 
-      <ScrollView>
-        <Title text="O que pretendes criar?" />
+      <View>
+        {/* <Title text="O que pretendes criar?" /> */}
 
-        <View style={styles.optionsContainer}>
-          <TouchableOpacity style={styles.optionContainer}>
-            <MaterialIcons name="arrow-right" size={24} color="#F35298" />
-            <Text style={styles.optionText}>Curso</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.optionContainer}>
-            <MaterialIcons name="arrow-right" size={24} color="#F35298" />
-            <Text style={styles.optionText}>Disciplina</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.optionContainer}>
-            <MaterialIcons name="arrow-right" size={24} color="#F35298" />
-            <Text style={styles.optionText}>Professor</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.optionContainer}>
-            <MaterialIcons name="arrow-right" size={24} color="#F35298" />
-            <Text style={styles.optionText}>Aluno</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.optionContainer}>
-            <MaterialIcons name="arrow-right" size={24} color="#F35298" />
-            <Text style={styles.optionText}>Comunicado</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.optionContainer}>
-            <MaterialIcons name="arrow-right" size={24} color="#F35298" />
-            <Text style={styles.optionText}>Turma</Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
+        <FlatList
+          data={criarOptions}
+          style={styles.optionsContainer}
+          keyExtractor={(item, index) => item.title}
+          renderItem={({ item, index }) => (
+            <TouchableOpacity
+              style={styles.optionContainer}
+              onPress={() => handleOptionPress(item.routeName)}
+            >
+              <MaterialIcons name="arrow-right" size={24} color="#F35298" />
+              <Text style={styles.optionText}>{item.title}</Text>
+            </TouchableOpacity>
+          )}
+        />
+      </View>
     </View>
   );
 }
@@ -82,6 +81,7 @@ const styles = StyleSheet.create({
 
   optionsContainer: {
     marginHorizontal: 24,
+    marginVertical: 24,
   },
 
   optionContainer: {

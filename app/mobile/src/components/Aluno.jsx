@@ -1,14 +1,17 @@
-import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image } from "react-native";
 
 import celmaImg from "../assets/profile.jpg";
 import Button from "./Button";
 
-export default function Aluno({ aproveitamento }) {
+export default function Aluno({ aproveitamento, handleSaberMais, nomeAluno }) {
+  const nomeAlunoFormatted =
+    nomeAluno.length <= 17 ? nomeAluno : `${nomeAluno.slice(0, 17)}...`;
+
   return (
     <View style={styles.container}>
-      <Image source={celmaImg} style={styles.profilePic} />
+      <Image source={celmaImg} resizeMode="contain" style={styles.profilePic} />
       <View style={styles.rightSide}>
-        <Text style={styles.nomeAluno}>Alberto Dos Santos Kitumba</Text>
+        <Text style={styles.nomeAluno}>{nomeAlunoFormatted}</Text>
         <View style={styles.progresses}>
           <View style={styles.progress} />
           <View
@@ -20,7 +23,7 @@ export default function Aluno({ aproveitamento }) {
         </View>
         <View style={styles.actions}>
           <Button text="Contactar" stylesContainer={{ marginRight: 12 }} />
-          <Button text="Saber mais" outlined={true} />
+          <Button text="Saber mais" onPress={handleSaberMais} outlined={true} />
         </View>
       </View>
     </View>

@@ -63,7 +63,9 @@ class NotasController {
     }
 
     try {
-      let nota = await Notas.findOne({ disciplina_id, aluno_id, trimestre });
+      let nota = await Notas.findOne({
+        where: { disciplina_id, aluno_id, trimestre },
+      });
 
       if (nota) {
         return res.json(nota);
@@ -81,7 +83,10 @@ class NotasController {
     } catch (error) {
       return res
         .status(409)
-        .json({ message: "Ja existe um comunicado com esse titulo" });
+        .json({
+          message: "Houve um erro no lançamento das notas, tente novamente",
+          error,
+        });
     }
   }
 
@@ -124,7 +129,13 @@ class NotasController {
         .json({ message: "Nao pode realizar essa operacao" });
     }
 
-    await nota.update({ nota_1, nota_2, nota_3 });
+    try {
+      await nota.update({ nota_1, nota_2, nota_3 });
+    } catch (error) {
+      return res
+        .status(400)
+        .json({ message: "Todas as notas devem estar no intervalo de 0 à 20" });
+    }
 
     return res.json(nota);
   }

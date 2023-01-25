@@ -13,9 +13,27 @@ class Notas extends Model {
           type: DataTypes.ENUM("PRIMEIRO", "SEGUNDO", "TERCEIRO"),
           allowNull: false,
         },
-        nota_1: DataTypes.TINYINT(2),
-        nota_2: DataTypes.TINYINT(2),
-        nota_3: DataTypes.TINYINT(2),
+        nota_1: {
+          type: DataTypes.TINYINT(2),
+          validate: {
+            min: 0,
+            max: 20,
+          },
+        },
+        nota_2: {
+          type: DataTypes.TINYINT(2),
+          validate: {
+            min: 0,
+            max: 20,
+          },
+        },
+        nota_3: {
+          type: DataTypes.TINYINT(2),
+          validate: {
+            min: 0,
+            max: 20,
+          },
+        },
       },
       {
         sequelize,

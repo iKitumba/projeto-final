@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import {
   ScrollView,
   View,
@@ -8,30 +9,74 @@ import {
   FlatList,
 } from "react-native";
 import Constants from "expo-constants";
-import { Feather, Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 
 import profileImg from "../../assets/profile.jpg";
 import Title from "../../components/Title";
+import notasDisciplina from "../../utils/notasDisciplina";
+import NotasDisciplina from "../../components/NotasDisciplina";
+import { LinearGradient } from "expo-linear-gradient";
 
-export default function AlunoPerfil() {
+import { AuthContext } from "../../contexts/AuthContext";
+
+export default function AlunoPerfil({ navigation }) {
+  const { usuario } = useContext(AuthContext);
+
+  function handleNavigateToProfessores() {
+    navigation.navigate("Professores");
+  }
+
+  function handleNavigateToImprimir() {
+    navigation.navigate("Imprimir");
+  }
+
+  function handleNavigateToAddNotas(
+    disciplina,
+    nota1,
+    nota2,
+    nota3,
+    trimestre
+  ) {
+    navigation.navigate("AddNotas", {
+      disciplina,
+      nota1,
+      nota2,
+      nota3,
+      trimestre,
+    });
+  }
+
   return (
     <ScrollView style={styles.wrapper}>
-      <View style={styles.header}>
-        <Image source={profileImg} style={styles.profileImg} />
-      </View>
+      <LinearGradient
+        // style={styles.gradient}
+        end={{ x: 0, y: 1 }}
+        colors={["#097FFA", "#E7EBEF"]}
+      >
+        <View style={styles.header}>
+          <Image
+            source={profileImg}
+            resizeMode="contain"
+            style={styles.profileImg}
+          />
+        </View>
+      </LinearGradient>
       <ScrollView style={styles.container}>
         <Text style={styles.nomeAluno}>Alberto Dos Santos Kitumba</Text>
         <Text style={styles.descricaoAluno}>
           Frequenta a 11ª classe, turma A no curso de Farmácia no período Diurno
         </Text>
         <View style={styles.actions}>
-          <TouchableOpacity style={styles.contactarbutton}>
+          <TouchableOpacity
+            style={styles.contactarbutton}
+            onPress={handleNavigateToProfessores}
+          >
             {/* <Feather name="phone-call" size={24} color="#E7EBEF" /> */}
-            <Text style={styles.contactarButtonText}>Contactar</Text>
+            <Text style={styles.contactarButtonText}>Professores</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.editButton}>
+          {/* <TouchableOpacity style={styles.editButton}>
             <MaterialIcons name="edit" size={24} color="#097FFA" />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
         <Title
           text="33% de Aproveitamento"
@@ -50,46 +95,40 @@ export default function AlunoPerfil() {
               <Text style={styles.boletimTrimestreText}>
                 PRIMEIRO TRIMESTRE
               </Text>
-              <TouchableOpacity style={styles.boletimPrint}>
+              <TouchableOpacity
+                style={styles.boletimPrint}
+                onPress={handleNavigateToImprimir}
+              >
                 <Ionicons name="print" size={24} color="#F35298" />
               </TouchableOpacity>
             </View>
 
             <ScrollView style={styles.boletimContainer}>
               <View style={styles.row}>
-                <Text style={styles.boletimContentText}>Disciplina</Text>
-                <Text style={styles.boletimContentText}>Nota 1</Text>
-                <Text style={styles.boletimContentText}>Nota 2</Text>
-                <Text style={styles.boletimContentText}>Nota 3</Text>
-                <Text style={styles.boletimContentText}>Média</Text>
+                <Text style={styles.boletimContentHeaderText}>
+                  Disciplina(Nota1, Nota2, Nota3, Média)
+                </Text>
               </View>
-              <View style={styles.row}>
-                <Text style={styles.boletimContentText}>Disciplina</Text>
-                <Text style={styles.boletimContentText}>Nota 1</Text>
-                <Text style={styles.boletimContentText}>Nota 2</Text>
-                <Text style={styles.boletimContentText}>Nota 3</Text>
-                <Text style={styles.boletimContentText}>Média</Text>
-              </View>
-              <View style={styles.row}>
-                <Text style={styles.boletimContentText}>Disciplina</Text>
-                <Text style={styles.boletimContentText}>Nota 1</Text>
-                <Text style={styles.boletimContentText}>Nota 2</Text>
-                <Text style={styles.boletimContentText}>Nota 3</Text>
-                <Text style={styles.boletimContentText}>Média</Text>
-              </View>
-              <View style={styles.row}>
-                <Text style={styles.boletimContentText}>Disciplina</Text>
-                <Text style={styles.boletimContentText}>Nota 1</Text>
-                <Text style={styles.boletimContentText}>Nota 2</Text>
-                <Text style={styles.boletimContentText}>Nota 3</Text>
-                <Text style={styles.boletimContentText}>Média</Text>
-              </View>
-              <View style={styles.row}>
-                <Text style={styles.boletimContentText}>Disciplina</Text>
-                <Text style={styles.boletimContentText}>Nota 1</Text>
-                <Text style={styles.boletimContentText}>Nota 2</Text>
-                <Text style={styles.boletimContentText}>Nota 3</Text>
-                <Text style={styles.boletimContentText}>Média</Text>
+
+              <View style={styles.notaDisciplinaContainer}>
+                {notasDisciplina.map(({ disciplina, nota1, nota2, nota3 }) => (
+                  <NotasDisciplina
+                    key={disciplina}
+                    disciplina={disciplina}
+                    nota1={nota1}
+                    nota2={nota2}
+                    nota3={nota3}
+                    handleNavigateToAddNotas={() =>
+                      handleNavigateToAddNotas(
+                        disciplina,
+                        nota1,
+                        nota2,
+                        nota3,
+                        "PRIMEIRO"
+                      )
+                    }
+                  />
+                ))}
               </View>
             </ScrollView>
           </View>
@@ -111,11 +150,22 @@ const styles = StyleSheet.create({
   header: {
     width: "100%",
     height: 250,
-    backgroundColor: "#CFCFCF",
+    // backgroundColor: "#CFCFCF",
     alignItems: "center",
     justifyContent: "center",
     paddingTop: Constants.statusBarHeight,
   },
+
+  // gradient: {
+  //   width: "100%",
+  //   height: 250,
+  //   flexDirection: "row",
+  //   alignItems: "center",
+  //   justifyContent: "space-between",
+  //   paddingHorizontal: 24,
+  //   borderRadius: 4,
+  // },
+
   profileImg: {
     width: 154,
     height: 154,
@@ -133,7 +183,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#61768D",
     fontSize: 16,
-    fontWeight: "100",
     lineHeight: 24,
     marginTop: 12,
     opacity: 0.5,
@@ -146,7 +195,7 @@ const styles = StyleSheet.create({
   },
   contactarbutton: {
     backgroundColor: "#097FFA",
-    width: "80%",
+    flex: 1,
     borderRadius: 4,
     height: 46,
     flexDirection: "row",
@@ -174,7 +223,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     marginHorizontal: 12,
     marginTop: 12,
-    marginBottom: 100,
+    marginBottom: 30,
     borderColor: "#61768D",
     borderWidth: 1,
   },
@@ -201,12 +250,17 @@ const styles = StyleSheet.create({
   boletimContainer: {},
   row: {
     flexDirection: "row",
-    borderBottomWidth: 1,
+    borderBottomWidth: 2,
     borderBottomColor: "#61768D",
     justifyContent: "space-between",
     paddingRight: 12,
     paddingVertical: 12,
     alignContent: "stretch",
+  },
+  boletimContentHeaderText: {
+    color: "#61768D",
+    fontWeight: "bold",
+    fontSize: 16,
   },
   boletimContentText: {
     borderRightColor: "#61768D",
@@ -214,4 +268,5 @@ const styles = StyleSheet.create({
     borderRightWidth: 1,
     paddingHorizontal: 4,
   },
+  notaDisciplinaContainer: {},
 });

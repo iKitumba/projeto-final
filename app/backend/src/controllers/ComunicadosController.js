@@ -5,9 +5,10 @@ class ComunicadosController {
     const comunicados = await Comunicados.findAll({
       attributes: ["id", "titulo", "conteudo", "created_at"],
       include: { association: "usuario", attributes: ["id", "nome_completo"] },
+      order: [["created_at", "DESC"]],
     });
 
-    return res.json(comunicados);
+    return res.json({ comunicados });
   }
 
   async store(req, res) {
@@ -28,7 +29,7 @@ class ComunicadosController {
           criado_por: usuario_id,
         });
 
-        return res.status(201).json(comunicado);
+        return res.status(201).json({ comunicado });
       } catch (error) {
         return res.status(409).json({
           message: "Ja existe um comunicado com esse titulo",

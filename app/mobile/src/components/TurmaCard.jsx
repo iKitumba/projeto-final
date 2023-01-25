@@ -6,9 +6,10 @@ export default function TurmaCard({
   periodo,
   num_alunos,
   aproveitamento,
+  onPress,
 }) {
   return (
-    <TouchableOpacity
+    <View
       style={[
         styles.turmaContainer,
         {
@@ -21,7 +22,8 @@ export default function TurmaCard({
         },
       ]}
     >
-      <View
+      <TouchableOpacity
+        onPress={onPress}
         style={[
           styles.turmaMetadata,
           {
@@ -50,12 +52,12 @@ export default function TurmaCard({
         >
           {curso}
         </Text>
-      </View>
+      </TouchableOpacity>
       <View style={styles.turmaInfo}>
         <Text style={styles.periodo}>{periodo}</Text>
         <Text style={styles.num_alunos}>{num_alunos} alunos</Text>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 }
 

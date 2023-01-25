@@ -36,6 +36,8 @@ class Turmas extends Model {
       through: "professor_disciplina_turma",
       as: "professores",
     });
+
+    this.hasMany(models.Alunos, { foreignKey: "turma_id", as: "alunos" });
   }
 }
 

@@ -1,5 +1,17 @@
-import { View, ScrollView, Text, StyleSheet, Image } from "react-native";
+import { useState, useEffect } from "react";
+import {
+  View,
+  ScrollView,
+  Text,
+  StyleSheet,
+  Image,
+  FlatList,
+} from "react-native";
 import Constants from "expo-constants";
+import { format } from "date-fns";
+import pt from "date-fns/locale/pt";
+
+import { API } from "../../services/api";
 
 import Search from "../../components/Search";
 import Title from "../../components/Title";
@@ -7,174 +19,60 @@ import Title from "../../components/Title";
 import elipseImg from "../../assets/elipse.png";
 
 export default function Comunicados() {
-  return (
-    <ScrollView style={styles.container}>
-      <Search />
-      <Title text="Últimos comunicados" />
+  const [comunicados, setComunicados] = useState([]);
 
-      <View style={styles.comunicadosContainer}>
-        <View style={styles.comunicadoContainer}>
-          <View style={styles.comunicadoHeader}>
-            <View style={styles.comunicadoHeaderTop}>
-              <Image source={elipseImg} />
-              <Text style={styles.comunicadoAssunto}>
-                Assunto do comunicado
+  useEffect(() => {
+    async function loadComunicados() {
+      const { data } = await API.get("comunicados");
+      setComunicados(data.comunicados);
+    }
+
+    loadComunicados();
+  }, []);
+
+  return (
+    <View style={styles.container}>
+      {/* <Search /> */}
+      <Title text="Últimos comunicados" stylesContainer={{ marginTop: 24 }} />
+
+      <FlatList
+        data={comunicados}
+        showsVerticalScrollIndicator={false}
+        keyExtractor={(item) => String(item.id)}
+        style={styles.comunicadosContainer}
+        // contentContainerStyle={styles.comunicadosContainer}
+        renderItem={({ item: comunicado, index }) => {
+          const date = format(
+            new Date(comunicado.created_at),
+            "'Aos' d ' De ' MMMM k'h'mm",
+            {
+              locale: pt,
+            }
+          );
+
+          return (
+            <View style={styles.comunicadoContainer}>
+              <View style={styles.comunicadoHeader}>
+                <View style={styles.comunicadoHeaderTop}>
+                  <Image source={elipseImg} />
+                  <Text style={styles.comunicadoAssunto}>
+                    {comunicado.titulo}
+                  </Text>
+                </View>
+                <Text style={styles.comunicadoData}>
+                  {/* Aos 19 De Novembro 2022 */}
+                  {date}
+                </Text>
+              </View>
+              <Text style={styles.comunicadoContent}>
+                {comunicado.conteudo}
               </Text>
+              <View style={styles.separator} />
             </View>
-            <Text style={styles.comunicadoData}>Aos 19 De Novembro 2022</Text>
-          </View>
-          <Text style={styles.comunicadoContent}>
-            In this book, we take you on a fun, hands-on and pragmatic journey
-            to learning Node.js, Express and MongoDB development. You'll start
-            building your first Node.js app within minutes. Every chapter is
-            written in a bite-sized manner and straight to the point as I don’t
-            want to waste your time (and most certainly mine) on the content you
-            don't need.
-          </Text>
-          <View style={styles.separator} />
-        </View>
-        <View style={styles.comunicadoContainer}>
-          <View style={styles.comunicadoHeader}>
-            <View style={styles.comunicadoHeaderTop}>
-              <Image source={elipseImg} />
-              <Text style={styles.comunicadoAssunto}>
-                Assunto do comunicado
-              </Text>
-            </View>
-            <Text style={styles.comunicadoData}>Aos 19 De Novembro 2022</Text>
-          </View>
-          <Text style={styles.comunicadoContent}>
-            In this book, we take you on a fun, hands-on and pragmatic journey
-            to learning Node.js, Express and MongoDB development. You'll start
-            building your first Node.js app within minutes. Every chapter is
-            written in a bite-sized manner and straight to the point as I don’t
-            want to waste your time (and most certainly mine) on the content you
-            don't need.
-          </Text>
-          <View style={styles.separator} />
-        </View>
-        <View style={styles.comunicadoContainer}>
-          <View style={styles.comunicadoHeader}>
-            <View style={styles.comunicadoHeaderTop}>
-              <Image source={elipseImg} />
-              <Text style={styles.comunicadoAssunto}>
-                Assunto do comunicado
-              </Text>
-            </View>
-            <Text style={styles.comunicadoData}>Aos 19 De Novembro 2022</Text>
-          </View>
-          <Text style={styles.comunicadoContent}>
-            In this book, we take you on a fun, hands-on and pragmatic journey
-            to learning Node.js, Express and MongoDB development. You'll start
-            building your first Node.js app within minutes. Every chapter is
-            written in a bite-sized manner and straight to the point as I don’t
-            want to waste your time (and most certainly mine) on the content you
-            don't need.
-          </Text>
-          <View style={styles.separator} />
-        </View>
-        <View style={styles.comunicadoContainer}>
-          <View style={styles.comunicadoHeader}>
-            <View style={styles.comunicadoHeaderTop}>
-              <Image source={elipseImg} />
-              <Text style={styles.comunicadoAssunto}>
-                Assunto do comunicado
-              </Text>
-            </View>
-            <Text style={styles.comunicadoData}>Aos 19 De Novembro 2022</Text>
-          </View>
-          <Text style={styles.comunicadoContent}>
-            In this book, we take you on a fun, hands-on and pragmatic journey
-            to learning Node.js, Express and MongoDB development. You'll start
-            building your first Node.js app within minutes. Every chapter is
-            written in a bite-sized manner and straight to the point as I don’t
-            want to waste your time (and most certainly mine) on the content you
-            don't need.
-          </Text>
-          <View style={styles.separator} />
-        </View>
-        <View style={styles.comunicadoContainer}>
-          <View style={styles.comunicadoHeader}>
-            <View style={styles.comunicadoHeaderTop}>
-              <Image source={elipseImg} />
-              <Text style={styles.comunicadoAssunto}>
-                Assunto do comunicado
-              </Text>
-            </View>
-            <Text style={styles.comunicadoData}>Aos 19 De Novembro 2022</Text>
-          </View>
-          <Text style={styles.comunicadoContent}>
-            In this book, we take you on a fun, hands-on and pragmatic journey
-            to learning Node.js, Express and MongoDB development. You'll start
-            building your first Node.js app within minutes. Every chapter is
-            written in a bite-sized manner and straight to the point as I don’t
-            want to waste your time (and most certainly mine) on the content you
-            don't need.
-          </Text>
-          <View style={styles.separator} />
-        </View>
-        <View style={styles.comunicadoContainer}>
-          <View style={styles.comunicadoHeader}>
-            <View style={styles.comunicadoHeaderTop}>
-              <Image source={elipseImg} />
-              <Text style={styles.comunicadoAssunto}>
-                Assunto do comunicado
-              </Text>
-            </View>
-            <Text style={styles.comunicadoData}>Aos 19 De Novembro 2022</Text>
-          </View>
-          <Text style={styles.comunicadoContent}>
-            In this book, we take you on a fun, hands-on and pragmatic journey
-            to learning Node.js, Express and MongoDB development. You'll start
-            building your first Node.js app within minutes. Every chapter is
-            written in a bite-sized manner and straight to the point as I don’t
-            want to waste your time (and most certainly mine) on the content you
-            don't need.
-          </Text>
-          <View style={styles.separator} />
-        </View>
-        <View style={styles.comunicadoContainer}>
-          <View style={styles.comunicadoHeader}>
-            <View style={styles.comunicadoHeaderTop}>
-              <Image source={elipseImg} />
-              <Text style={styles.comunicadoAssunto}>
-                Assunto do comunicado
-              </Text>
-            </View>
-            <Text style={styles.comunicadoData}>Aos 19 De Novembro 2022</Text>
-          </View>
-          <Text style={styles.comunicadoContent}>
-            In this book, we take you on a fun, hands-on and pragmatic journey
-            to learning Node.js, Express and MongoDB development. You'll start
-            building your first Node.js app within minutes. Every chapter is
-            written in a bite-sized manner and straight to the point as I don’t
-            want to waste your time (and most certainly mine) on the content you
-            don't need.
-          </Text>
-          <View style={styles.separator} />
-        </View>
-        <View style={styles.comunicadoContainer}>
-          <View style={styles.comunicadoHeader}>
-            <View style={styles.comunicadoHeaderTop}>
-              <Image source={elipseImg} />
-              <Text style={styles.comunicadoAssunto}>
-                Assunto do comunicado
-              </Text>
-            </View>
-            <Text style={styles.comunicadoData}>Aos 19 De Novembro 2022</Text>
-          </View>
-          <Text style={styles.comunicadoContent}>
-            In this book, we take you on a fun, hands-on and pragmatic journey
-            to learning Node.js, Express and MongoDB development. You'll start
-            building your first Node.js app within minutes. Every chapter is
-            written in a bite-sized manner and straight to the point as I don’t
-            want to waste your time (and most certainly mine) on the content you
-            don't need.
-          </Text>
-          <View style={styles.separator} />
-        </View>
-      </View>
-    </ScrollView>
+          );
+        }}
+      />
+    </View>
   );
 }
 
@@ -184,10 +82,11 @@ const styles = StyleSheet.create({
     paddingTop: Constants.statusBarHeight + 24,
     backgroundColor: "#E7EBEF",
     paddingHorizontal: 24,
-    paddingVertical: 24,
+    paddingTop: 24,
   },
   comunicadosContainer: {
-    marginBottom: 200,
+    flex: 1,
+    paddingBottom: 200,
   },
   comunicadoHeader: {
     marginBottom: 12,

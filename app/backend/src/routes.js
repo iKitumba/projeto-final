@@ -9,6 +9,8 @@ const ComunicadosController = require("./controllers/ComunicadosController");
 const ProfessorDisciplinaController = require("./controllers/ProfessorDisciplinaController");
 const ProfessorController = require("./controllers/ProfessorController");
 const AlunosController = require("./controllers/AlunosController");
+const RelatorioController = require("./controllers/RelatorioController");
+const AlunosSessaoController = require("./controllers/AlunosSessaoController");
 
 const authMiddleware = require("./middlewares/auth");
 
@@ -17,6 +19,7 @@ const NotasController = require("./controllers/NotasController");
 
 const routes = Router();
 
+routes.post("/alunos_sessao", AlunosSessaoController.store);
 routes.post("/usuarios/sessao", SessaoController.store);
 routes.get("/usuarios", authMiddleware, UsuariosController.index);
 routes.post(
@@ -33,7 +36,7 @@ routes.post(
 routes.get("/cursos", CursosController.index);
 routes.post("/cursos", authMiddleware, CursosController.store);
 
-routes.get("/cursos/:curso_id/turmas", TurmasController.index);
+routes.get("/turmas", TurmasController.index);
 routes.post("/cursos/:curso_id/turmas", authMiddleware, TurmasController.store);
 routes.get("/turmas/:turma_id", authMiddleware, TurmasController.show);
 
@@ -48,8 +51,9 @@ routes.get(
   authMiddleware,
   ProfessorDisciplinaController.index
 );
+
 routes.post(
-  "/turmas/:turma_id/disciplinas/:professor_id",
+  "/professores/:professor_id/disciplinas/:disciplina_id/turmas/:turma_id",
   authMiddleware,
   ProfessorDisciplinaController.store
 );
@@ -76,5 +80,11 @@ routes.patch(
   authMiddleware,
   NotasController.update
 );
+
+/**
+ * Relatório sobre as turmas
+ */
+
+routes.get("/relatorio/turmas", authMiddleware, RelatorioController.index);
 
 module.exports = routes;

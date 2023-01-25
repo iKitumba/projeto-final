@@ -5,9 +5,11 @@ export default function Button({
   text,
   stylesContainer,
   stylesText,
+  onPress,
 }) {
   return (
     <TouchableOpacity
+      onPress={onPress}
       style={
         outlined
           ? [styles.containerOutlined, stylesContainer]

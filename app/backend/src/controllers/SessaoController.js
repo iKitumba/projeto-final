@@ -12,7 +12,7 @@ class SessionController {
     }
 
     if (!(await bcrypt.compare(senha, usuario.senha))) {
-      return res.status(401).json({ message: "Senha invalida" });
+      return res.status(401).json({ message: "Senha incorreta" });
     }
 
     usuario.senha = undefined;

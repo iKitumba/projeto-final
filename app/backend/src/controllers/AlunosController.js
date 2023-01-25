@@ -80,7 +80,7 @@ class AlunosController {
             if (err) {
               console.log(err);
             }
-            return res.status(400).send({ message: "Tipo de genero inalido" });
+            return res.status(400).send({ message: "Tipo de genero invalido" });
           }
         );
       }

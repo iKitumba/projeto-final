@@ -15,15 +15,19 @@ import SelectDropdown from "react-native-select-dropdown";
 import { letras } from "../../constants/letras";
 import { classes } from "../../constants/classes";
 
-export default function CriarTurma() {
+export default function CriarTurma({ navigation }) {
   const [checked, setChecked] = useState(1);
   const countries = ["Egypt", "Canada", "Australia", "Ireland"];
+
+  function handleBack() {
+    navigation.goBack();
+  }
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.topRow}>
-          <TouchableOpacity style={styles.goBack}>
+          <TouchableOpacity style={styles.goBack} onPress={handleBack}>
             <Ionicons name="arrow-back" size={24} color="#61768D" />
             <Text style={styles.topOpctionName}>Turma</Text>
           </TouchableOpacity>

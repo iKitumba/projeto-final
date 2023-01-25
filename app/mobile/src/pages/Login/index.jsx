@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   View,
   Text,
@@ -10,17 +10,20 @@ import {
   Platform,
 } from "react-native";
 
+import { AuthContext } from "../../contexts/AuthContext";
+
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 
 import logoImg from "../../assets/logo.png";
 
-export default function Login() {
-  const [isAnUser, setIsAnUser] = useState(true);
-  const [fields, setFields] = useState({ first: "", second: "" });
+export default function Login({ navigation }) {
+  const [username, setUsername] = useState("");
+  const [senha, setSenha] = useState("");
+  const { handleLogin } = useContext(AuthContext);
 
-  async function handleLogin() {
-    console.log({ isAnUser, ...fields });
+  function navigateToLoginAluno() {
+    navigation.navigate("LoginAluno");
   }
 
   return (
@@ -32,39 +35,36 @@ export default function Login() {
       <Image source={logoImg} style={styles.logo} />
 
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>NOME</Text>
+        <Text style={styles.label}>USERNAME</Text>
         <TextInput
           style={styles.input}
-          placeholder={
-            isAnUser ? "Digite o seu nome de usuário" : "Nome completo do aluno"
-          }
+          placeholder="Digite o seu nome de usuário"
           placeholderTextColor="rgba(115, 134, 155, .4)"
-          autoCapitalize="words"
-          value={fields.first}
-          onChangeText={(text) => setFields({ ...fields, first: text })}
+          autoCapitalize="none"
+          value={username}
+          onChangeText={setUsername}
           autoCorrect={false}
         />
       </View>
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>{isAnUser ? "SENHA" : "BI"}</Text>
+        <Text style={styles.label}>SENHA</Text>
         <TextInput
           style={styles.input}
-          placeholder={isAnUser ? "Digite sua senha" : "Bilhete de identidade"}
+          placeholder="Digite sua senha"
           placeholderTextColor="rgba(115, 134, 155, .4)"
-          keyboardType="visible-password"
           secureTextEntry={true}
-          textContentType="password"
-          value={fields.second}
-          onChangeText={(text) => setFields({ ...fields, second: text })}
+          value={senha}
+          onChangeText={setSenha}
         />
       </View>
-      <TouchableOpacity onPress={() => setIsAnUser((prev) => !prev)}>
-        <Text style={styles.microText}>
-          {isAnUser ? "Entrar como aluno" : "Entrar com usuário e senha"}
-        </Text>
+      <TouchableOpacity onPress={navigateToLoginAluno}>
+        <Text style={styles.microText}>Entrar como aluno</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.submitButton} onPress={handleLogin}>
+      <TouchableOpacity
+        style={styles.submitButton}
+        onPress={() => handleLogin({ username, senha })}
+      >
         <LinearGradient
           style={styles.gradient}
           end={{ x: 1, y: 1 }}

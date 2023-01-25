@@ -6,9 +6,7 @@ const Alunos = require("../models/Alunos");
 
 class TurmasController {
   async index(req, res) {
-    const { curso_id } = req.params;
     const turmas = await Turmas.findAll({
-      where: { curso_id },
       order: ["classe", "letra"],
       attributes: ["id", "letra", "turno", "classe"],
       include: [

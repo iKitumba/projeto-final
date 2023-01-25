@@ -7,12 +7,11 @@ export default function Professor() {
       <TouchableOpacity style={styles.td}>
         <Text style={styles.tdText}>Cédric Mácua</Text>
       </TouchableOpacity>
-      <Text style={[styles.td, styles.tdText]}>Económia</Text>
       <TouchableOpacity style={styles.td}>
         <Ionicons
           name="call-outline"
           size={24}
-          style={{ alignSelf: "center" }}
+          style={{ alignSelf: "flex-end" }}
           color="#097FFA"
         />
       </TouchableOpacity>
@@ -29,13 +28,16 @@ const styles = StyleSheet.create({
     backgroundColor: "#F5FAFF",
     paddingVertical: 8,
     borderRadius: 4,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: "#61768d7f",
   },
   td: {
     flex: 1,
-    paddingHorizontal: 4,
+    paddingHorizontal: 12,
   },
   tdText: {
-    fontSize: 14,
+    fontSize: 16,
     color: "#61768D",
   },
 });

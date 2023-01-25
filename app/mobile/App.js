@@ -1,27 +1,24 @@
 import { StatusBar } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
 
-import Login from "./src/pages/Login";
-import Home from "./src/pages/Home";
-import Turma from "./src/pages/Turma";
-import Comunicados from "./src/pages/Comunicados";
-import AlunoPerfil from "./src/pages/AlunoProfile";
-import Professores from "./src/pages/Professores";
-import Criar from "./src/pages/Criar";
-import Comunicado from "./src/pages/Comunicado";
-import Curso from "./src/pages/Curso";
-import Disciplina from "./src/pages/Disciplina";
-import CriarTurma from "./src/pages/CriarTurma";
-import CriarAluno from "./src/pages/CriarAluno";
+import AppRoutes from "./src/routes/app.routes";
+import AuthContextProvider from "./src/contexts/AuthContext";
+import AlunoRoutes from "./src/routes/aluno.routes";
+import TurmaRoutes from "./src/routes/turma.routes";
+import ProfessorRoutes from "./src/routes/professor.routes";
+import ExpoPrint from "./src/pages/ExpoPrint";
 
 export default function App() {
   return (
-    <>
-      <StatusBar
-        barStyle="dark-content"
-        backgroundColor="#E7EBEF"
-        translucent={true}
-      />
-      <CriarAluno />
-    </>
+    <AuthContextProvider>
+      <NavigationContainer>
+        <StatusBar
+          barStyle="dark-content"
+          backgroundColor="#E7EBEF"
+          translucent={true}
+        />
+        <AppRoutes />
+      </NavigationContainer>
+    </AuthContextProvider>
   );
 }

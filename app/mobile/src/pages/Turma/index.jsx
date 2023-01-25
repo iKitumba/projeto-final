@@ -5,17 +5,27 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  FlatList,
 } from "react-native";
 import Constants from "expo-constants";
 import Title from "../../components/Title";
 import Aluno from "../../components/Aluno";
+import { turmasAlunos } from "../../utils/turmaAlunos";
 
-export default function Turma() {
+export default function Turma({ navigation }) {
+  function navigateToBack() {
+    navigation.goBack();
+  }
+
+  function handleSaberMais() {
+    navigation.navigate("AlunoPerfil");
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.topRow}>
-          <TouchableOpacity style={styles.goBack}>
+          <TouchableOpacity style={styles.goBack} onPress={navigateToBack}>
             <Ionicons name="arrow-back" size={24} color="#61768D" />
             <Text style={styles.topCursoName}>FÁRMACIA</Text>
           </TouchableOpacity>
@@ -30,25 +40,17 @@ export default function Turma() {
         </View>
       </View>
 
-      <ScrollView>
-        <Aluno aproveitamento={30} />
-        <Aluno aproveitamento={40} />
-        <Aluno aproveitamento={10} />
-        <Aluno aproveitamento={0} />
-        <Aluno aproveitamento={30} />
-        <Aluno aproveitamento={70} />
-        <Aluno aproveitamento={90} />
-        <Aluno aproveitamento={0} />
-        <Aluno aproveitamento={100} />
-        <Aluno aproveitamento={20} />
-        <Aluno aproveitamento={3} />
-        <Aluno aproveitamento={50} />
-        <Aluno aproveitamento={30} />
-        <Aluno aproveitamento={30} />
-        <Aluno aproveitamento={60} />
-        <Aluno aproveitamento={59} />
-        <Aluno aproveitamento={18} />
-      </ScrollView>
+      <FlatList
+        data={turmasAlunos}
+        keyExtractor={(item, index) => String(item.aproveitamento)}
+        renderItem={({ item, index }) => (
+          <Aluno
+            aproveitamento={item.aproveitamento}
+            handleSaberMais={handleSaberMais}
+            nomeAluno={item.nomeAluno}
+          />
+        )}
+      />
     </View>
   );
 }

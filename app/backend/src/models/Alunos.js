@@ -38,6 +38,7 @@ class Alunos extends Model {
     });
 
     this.belongsTo(models.Turmas, { foreignKey: "turma_id", as: "turma" });
+    this.hasMany(models.Notas, { foreignKey: "aluno_id", as: "notas" });
   }
 }
 

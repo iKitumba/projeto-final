@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   View,
   Text,
@@ -9,12 +10,23 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import Constants from "expo-constants";
 
-export default function Disciplina() {
+export default function Disciplina({ navigation }) {
+  const [titulo, setTitulo] = useState("");
+  const [diminuitivo, setDiminuitivo] = useState("");
+
+  function handleBack() {
+    navigation.goBack();
+  }
+
+  function handleSubmit() {
+    console.log({ titulo, diminuitivo })
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.topRow}>
-          <TouchableOpacity style={styles.goBack}>
+          <TouchableOpacity style={styles.goBack} onPress={handleBack}>
             <Ionicons name="arrow-back" size={24} color="#61768D" />
             <Text style={styles.topOpctionName}>Disciplina</Text>
           </TouchableOpacity>
@@ -28,23 +40,32 @@ export default function Disciplina() {
             placeholder="Titulo da disciplina"
             placeholderTextColor="rgba(115, 134, 155, .4)"
             style={styles.input}
+            value={titulo}
+            onChangeText={setTitulo}
+            autoCapitalize="words"
           />
+
         </View>
+
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Diminuitivo</Text>
           <TextInput
-            placeholder="Um nome curto para a disciplina"
+            placeholder="Uma abreviação para a disciplina"
             style={styles.input}
             placeholderTextColor="rgba(115, 134, 155, .4)"
+            autoCapitalize="characters"
+            value={diminuitivo}
+            onChangeText={setDiminuitivo}
           />
         </View>
 
         <View style={styles.actions}>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={handleSubmit}>
             <Text style={styles.buttonText}>Criar</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.button, { backgroundColor: "#FD1818" }]}
+            onPress={handleBack}
           >
             <Text style={styles.buttonText}>Descartar</Text>
           </TouchableOpacity>

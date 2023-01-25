@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   View,
   Text,
@@ -9,12 +10,23 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import Constants from "expo-constants";
 
-export default function Curso() {
+export default function Curso({ navigation }) {
+  const [titulo, setTitulo] = useState("");
+  const [diminuitivo, setDiminuitivo] = useState("");
+
+  function handleBack() {
+    navigation.goBack();
+  }
+
+  function handleSubmit() {
+    console.log({ titulo, diminuitivo });
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.topRow}>
-          <TouchableOpacity style={styles.goBack}>
+          <TouchableOpacity style={styles.goBack} onPress={handleBack}>
             <Ionicons name="arrow-back" size={24} color="#61768D" />
             <Text style={styles.topOpctionName}>Curso</Text>
           </TouchableOpacity>
@@ -27,20 +39,27 @@ export default function Curso() {
           <TextInput
             placeholder="Titulo do curso"
             placeholderTextColor="rgba(115, 134, 155, .4)"
+            autoCapitalize="words"
             style={styles.input}
+            value={titulo}
+            onChangeText={setTitulo}
           />
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Diminuitivo</Text>
           <TextInput
-            placeholder="Um nome curto para o curso"
+            placeholder="Uma abreviação para o curso"
             style={styles.input}
             placeholderTextColor="rgba(115, 134, 155, .4)"
+            maxLength={10}
+            value={diminuitivo}
+            onChangeText={setDiminuitivo}
+            autoCapitalize="characters"
           />
         </View>
 
         <View style={styles.actions}>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={handleSubmit}>
             <Text style={styles.buttonText}>Criar</Text>
           </TouchableOpacity>
           <TouchableOpacity
